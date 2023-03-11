@@ -1,14 +1,20 @@
 package org.example;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URL;//
+// API Request:   http://api.open-notify.org/iss-now.json
+//
+//  Response from API request: (as at March 2023)
+// { "timestamp": 1678523947,                   // UNIX Time (seconds since 1st Jan 1970)
+//   "iss_position": { "latitude": "-47.8432",
+//                     "longitude": "93.5798"},
+//   "message": "success"
+// }
 
 class App {
 
@@ -16,40 +22,58 @@ class App {
 
         String url = "http://api.open-notify.org/iss-now.json";
 
-        String content = fetchContent(url);
+        String jsonString = fetchJsonFromAPI(url);
 
-        Gson gson = new Gson();
-
-//                new GsonBuilder().registerTypeAdapter(Employee.class, new JsonDeserializerEmployee())
-//                .serializeNulls().create();
-
-        IssNow issNow = gson.fromJson(content, new TypeToken<IssNow>() {
-        }.getType());
-
-        System.out.println(issNow);
-    }
-
-    private static String fetchContent(String uri) throws IOException {
-
-        final int OK = 200;
-        URL url = new URL(uri);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == OK) {
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            return response.toString();
+        if(jsonString==null){
+            System.out.println("Connection failed, exiting.");
+            return;
         }
 
-        return null;
+        // Instantiate (create) a Gson Parser
+        Gson gsonParser = new Gson();
+
+        // We use the default Gson parser here, which will map the JSON data
+        // into the IssLocationAtTime object as long as
+        // the names of the key fields in the JSON string are exactly the same
+        // as the names of the instance fields in the IssLocationAtTime class.
+
+        IssLocationAtTime issLocationAtTime = gsonParser.fromJson(jsonString, IssLocationAtTime.class );
+
+        //issLocationAtTime = new IssLocationAtTime(1678523947,"test message",56.789,6.789);
+        System.out.println(issLocationAtTime);
+    }
+
+    private static String fetchJsonFromAPI(String uri) throws IOException {
+
+        final int CONNECTION_OK = 200;  // code returned if connection is successful
+
+        URL url = new URL(uri);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        int responseCode = connection.getResponseCode();
+
+        if (responseCode == CONNECTION_OK)
+        {
+            // we have connected successfully, so now
+            // create an input buffer to read from the API stream
+            BufferedReader inBuffer = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            String inputLine;
+
+            // create a String buffer to build up the JSON String
+            // that will be returned from the stream
+            StringBuffer strBuffer = new StringBuffer();
+
+            // read in all lines from stream until the stream
+            // has been emptied.
+            while ((inputLine = inBuffer.readLine()) != null) {
+                strBuffer.append(inputLine);
+            }
+            inBuffer.close();
+
+            return strBuffer.toString();  // return the JSON String
+        }
+
+        return null; // if connection failed
     }
 }
