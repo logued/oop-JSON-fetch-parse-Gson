@@ -1,17 +1,17 @@
 package org.example;
 
-public class IssPosition {
+public class Position {
     public double latitude;
     public double longitude;
 
-    public IssPosition(double latitude, double longitude) {
+    public Position(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     @Override
     public String toString() {
-        return "IssPosition{" +
+        return "Position{" +
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';

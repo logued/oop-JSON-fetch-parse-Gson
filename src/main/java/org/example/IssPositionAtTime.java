@@ -1,6 +1,6 @@
 package org.example;
 
-// Class that represents the IssPosition of the ISS at a specific Time (Timestamped)
+// Class that represents the Position of the ISS at a specific Time (Timestamped)
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -8,7 +8,7 @@ import java.time.ZoneId;
 public class IssPositionAtTime {
     private long timestamp ;        // Unix Time (seconds since 1st January 1970
     private String message;
-    private IssPosition iss_position;  // must use field name to match key name in JSON
+    private Position iss_position;  // must use field name to match key name in JSON
 
     // The structure of our classes must match the structure of the JSON, so here we need to have
     // a class called "iss_position" that will have two fields that can take the latitude and longitude values.
@@ -21,7 +21,7 @@ public class IssPositionAtTime {
     public IssPositionAtTime(long unixTimeInSeconds, String message, double latitude, double longitude) {
         this.timestamp =  unixTimeInSeconds;
         this.message = message;
-        this.iss_position = new IssPosition(latitude,longitude);
+        this.iss_position = new Position(latitude,longitude);
     }
 
     @Override
