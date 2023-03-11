@@ -1,4 +1,4 @@
-package org.example;
+package org.example;                // March 2023
 
 import com.google.gson.Gson;
 
@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;//
+
+// Demonstrates how to fetch JSON from a remote API, and
+// parse the returned JSON into Java Objects, that have
+// a corresponding structure.
+
+// This sample uses the following API:
 // API Request:   http://api.open-notify.org/iss-now.json
 //
 //  Response from API request: (as at March 2023)
@@ -33,14 +39,14 @@ class App {
         Gson gsonParser = new Gson();
 
         // We use the default Gson parser here, which will map the JSON data
-        // into the IssLocationAtTime object as long as
+        // into the IssPositionAtTime object as long as
         // the names of the key fields in the JSON string are exactly the same
-        // as the names of the instance fields in the IssLocationAtTime class.
+        // as the names of the instance fields in the IssPositionAtTime class.
 
-        IssLocationAtTime issLocationAtTime = gsonParser.fromJson(jsonString, IssLocationAtTime.class );
+        IssPositionAtTime issPositionAtTime = gsonParser.fromJson(jsonString, IssPositionAtTime.class );
 
-        //issLocationAtTime = new IssLocationAtTime(1678523947,"test message",56.789,6.789);
-        System.out.println(issLocationAtTime);
+        //issPositionAtTime = new IssPositionAtTime(1678523947,"test message",56.789,6.789);
+        System.out.println(issPositionAtTime);
     }
 
     private static String fetchJsonFromAPI(String uri) throws IOException {

@@ -5,7 +5,7 @@ package org.example;
 import java.time.Instant;
 import java.time.ZoneId;
 
-public class IssLocationAtTime {
+public class IssPositionAtTime {
     private long timestamp ;        // Unix Time (seconds since 1st January 1970
     private String message;
     private IssPosition iss_position;  // must use field name to match key name in JSON
@@ -18,7 +18,7 @@ public class IssLocationAtTime {
     // The ISS API returns the timestamp in Unix Time
     // so, it is the number of seconds since 1st January 1970.
     //
-    public IssLocationAtTime(long unixTimeInSeconds, String message, double latitude, double longitude) {
+    public IssPositionAtTime(long unixTimeInSeconds, String message, double latitude, double longitude) {
         this.timestamp =  unixTimeInSeconds;
         this.message = message;
         this.iss_position = new IssPosition(latitude,longitude);
@@ -26,7 +26,7 @@ public class IssLocationAtTime {
 
     @Override
     public String toString() {
-        return "IssLocationAtTime{" +
+        return "IssPositionAtTime{" +
                 "timestamp=" + timestamp + "[" +
                             Instant.ofEpochSecond(timestamp)
                                     .atZone(ZoneId.of("Europe/Dublin"))
