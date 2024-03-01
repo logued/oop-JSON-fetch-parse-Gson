@@ -1,5 +1,7 @@
 package org.example;
 
+// Class used to store Position nested in the IssPositionAtTime class
+
 public class Position {
     public double latitude;
     public double longitude;
