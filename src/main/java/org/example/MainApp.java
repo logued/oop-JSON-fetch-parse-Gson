@@ -43,6 +43,8 @@ class MainApp {
     }
 
     public void start() {
+
+        // Ref:  https://www.baeldung.com/java-9-http-client
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()  // build an HTTP request
                 .uri(URI.create(URL))
@@ -64,7 +66,7 @@ class MainApp {
             System.out.println("HTTP Request failed - Status code returned = " + response.statusCode());
             return;
         }
-        // get the body (the data payload) from the HTTP response
+        // get the body (the data payload) from the HTTP response object
         String jsonResponseString = response.body();
 
         if (jsonResponseString == null) {
